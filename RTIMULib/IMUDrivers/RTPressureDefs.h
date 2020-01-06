@@ -29,9 +29,10 @@
 #define RTPRESSURE_TYPE_AUTODISCOVER        0                   // audodiscover the pressure sensor
 #define RTPRESSURE_TYPE_NULL                1                   // if no physical hardware
 #define RTPRESSURE_TYPE_BMP180              2                   // BMP180
-#define RTPRESSURE_TYPE_LPS25H              3                   // LPS25H
-#define RTPRESSURE_TYPE_MS5611              4                   // MS5611
-#define RTPRESSURE_TYPE_MS5637              5                   // MS5637
+#define RTPRESSURE_TYPE_BMP280              3                   // BMP280
+#define RTPRESSURE_TYPE_LPS25H              4                   // LPS25H
+#define RTPRESSURE_TYPE_MS5611              5                   // MS5611
+#define RTPRESSURE_TYPE_MS5637              6                   // MS5637
 
 //----------------------------------------------------------
 //
@@ -49,6 +50,38 @@
 #define BMP180_REG_SCO              0xf4
 #define BMP180_REG_RESULT           0xf6
 #define BMP180_REG_XLSB             0xf8
+
+//----------------------------------------------------------
+//
+//  BMP280 (http://ozzmaker.com/wp-content/uploads/2017/11/BMP280-DS001-11.pdf) pg 24
+//  ref: https://github.com/ozzmaker/BerryIMU/blob/master/python-BMP280-temperature-pressure/bmp280.py
+//  ref: https://github.com/BoschSensortec/BMP280_driver/blob/master/bmp280_defs.h
+
+//  BMP280 I2C Slave Addresses
+
+#define BMP280_ADDRESS              0x77
+#define BMP280_REG_ID               0xd0
+#define BMP280_ID                   0x56  //0x56, 57 or 58
+
+
+//	Register map
+#define BMP280_DIG_T1_LSB_ADDR      0x88
+#define BMP280_REG_CONTROL          0xf4
+#define BMP280_REG_CONFIG           0xf5
+#define BMP280_REG_PRESSUREDATA     0xf7
+#define BMP280_REG_TEMPDATA         0xfa
+
+#define BMP280_SOFT_RESET           0xe0
+#define BMP280_STATUS               0xf3
+#define BMP280_CTRL_MEAS            0xf4
+#define BMP280_CONFIG               0xf5
+#define BMP280_PRES_MSB             0xf7
+#define BMP280_PRES_LSB             0xf8
+#define BMP280_PRES_XLSB            0xf9
+#define BMP280_TEMP_MSB             0xfa
+#define BMP280_TEMP_LSB             0xfb
+#define BMP280_TEMP_XLSB            0xfc
+
 
 //----------------------------------------------------------
 //

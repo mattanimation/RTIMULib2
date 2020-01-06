@@ -209,6 +209,9 @@
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTPressureBMP180.cpp">
       <Filter>RTIMULib\IMUDrivers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTPressureBMP280.cpp">
+      <Filter>RTIMULib\IMUDrivers</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\RTIMULib\IMUDrivers\RTPressureLPS25H.cpp">
       <Filter>RTIMULib\IMUDrivers</Filter>
     </ClCompile>
@@ -352,6 +355,9 @@
       <Filter>RTIMULib\IMUDrivers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTPressureBMP180.h">
+      <Filter>RTIMULib\IMUDrivers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTPressureBMP280.h">
       <Filter>RTIMULib\IMUDrivers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\RTIMULib\IMUDrivers\RTPressureDefs.h">

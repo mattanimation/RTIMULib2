@@ -42,6 +42,7 @@
 #define RTIMULIB_SPI_SPEED                  "SPISpeed"
 #define RTIMULIB_AXIS_ROTATION              "AxisRotation"
 #define RTIMULIB_PRESSURE_TYPE              "PressureType"
+#define RTIMULIB_PRESSURE_RATE              "PressureRate"
 #define RTIMULIB_I2C_PRESSUREADDRESS        "I2CPressureAddress"
 #define RTIMULIB_HUMIDITY_TYPE              "HumidityType"
 #define RTIMULIB_I2C_HUMIDITYADDRESS        "I2CHumidityAddress"
@@ -233,6 +234,7 @@ public:
     unsigned char m_I2CSlaveAddress;                        // I2C slave address of the imu
     int m_axisRotation;                                     // axis rotation code
     int m_pressureType;                                     // type code of pressure sensor in use
+    int m_pressureRate;                                     // I2C register of how often to read the pressure sensor
     unsigned char m_I2CPressureAddress;                     // I2C slave address of the pressure sensor
     int m_humidityType;                                     // type code of humidity sensor in use
     unsigned char m_I2CHumidityAddress;                     // I2C slave address of the humidity sensor

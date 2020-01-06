@@ -49,6 +49,7 @@ The LSM9DS1 implementation was generously supplied by XECDesign.
 Pressure/temperature sensing works with the following pressure sensors:
 
 * BMP180
+* BMP280
 * LPS25H
 * MS5611
 * MS5637

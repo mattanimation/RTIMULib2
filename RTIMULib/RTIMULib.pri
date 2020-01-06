@@ -50,6 +50,7 @@ HEADERS += $$PWD/RTIMULib.h \
     $$PWD/IMUDrivers/RTPressure.h \
     $$PWD/IMUDrivers/RTPressureDefs.h \
     $$PWD/IMUDrivers/RTPressureBMP180.h \
+    $$PWD/IMUDrivers/RTPressureBMP280.h \
     $$PWD/IMUDrivers/RTPressureLPS25H.h \
     $$PWD/IMUDrivers/RTPressureMS5611.h \
     $$PWD/IMUDrivers/RTPressureMS5637.h \
@@ -79,6 +80,7 @@ SOURCES += $$PWD/RTMath.cpp \
     $$PWD/IMUDrivers/RTIMUNull.cpp \
     $$PWD/IMUDrivers/RTPressure.cpp \
     $$PWD/IMUDrivers/RTPressureBMP180.cpp \
+    $$PWD/IMUDrivers/RTPressureBMP280.cpp \
     $$PWD/IMUDrivers/RTPressureLPS25H.cpp \
     $$PWD/IMUDrivers/RTPressureMS5611.cpp \
     $$PWD/IMUDrivers/RTPressureMS5637.cpp \

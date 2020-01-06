@@ -36,6 +36,7 @@
 #include "IMUDrivers/RTIMUBMX055.h"
 
 #include "IMUDrivers/RTPressureBMP180.h"
+#include "IMUDrivers/RTPressureBMP280.h"
 #include "IMUDrivers/RTPressureLPS25H.h"
 
 #include "IMUDrivers/RTHumidityHTS221.h"
@@ -397,6 +398,15 @@ bool RTIMUSettings::discoverPressure(int& pressureType, unsigned char& pressureA
             }
         }
 
+        if (HALRead(BMP280_ADDRESS, BMP280_REG_ID, 1, &result, "")) {
+            if (result == BMP280_ID) {
+                pressureType = RTPRESSURE_TYPE_BMP280;
+                pressureAddress = BMP280_ADDRESS;
+                HAL_INFO("Detected BMP280\n");
+                return true;
+            }
+        }
+
         if (HALRead(LPS25H_ADDRESS0, LPS25H_REG_ID, 1, &result, "")) {
             if (result == LPS25H_ID) {
                 pressureType = RTPRESSURE_TYPE_LPS25H;
@@ -477,6 +487,7 @@ void RTIMUSettings::setDefaults()
     m_fusionType = RTFUSION_TYPE_RTQF;
     m_axisRotation = RTIMU_XNORTH_YEAST;
     m_pressureType = RTPRESSURE_TYPE_AUTODISCOVER;
+    m_pressureRate = 1;
     m_I2CPressureAddress = 0;
     m_humidityType = RTHUMIDITY_TYPE_AUTODISCOVER;
     m_I2CHumidityAddress = 0;
@@ -641,6 +652,8 @@ bool RTIMUSettings::loadSettings()
             m_axisRotation = atoi(val);
         } else if (strcmp(key, RTIMULIB_PRESSURE_TYPE) == 0) {
             m_pressureType = atoi(val);
+        } else if (strcmp(key, RTIMULIB_PRESSURE_RATE) == 0) {
+            m_pressureRate = atoi(val);
         } else if (strcmp(key, RTIMULIB_I2C_PRESSUREADDRESS) == 0) {
             m_I2CPressureAddress = atoi(val);
         } else if (strcmp(key, RTIMULIB_HUMIDITY_TYPE) == 0) {
@@ -984,16 +997,28 @@ bool RTIMUSettings::saveSettings()
     setComment("  0 = Auto discover");
     setComment("  1 = Null (no hardware or don't use)");
     setComment("  2 = BMP180");
-    setComment("  3 = LPS25H");
-    setComment("  4 = MS5611");
-    setComment("  5 = MS5637");
-
+    setComment("  3 = BMP280");
+    setComment("  4 = LPS25H");
+    setComment("  5 = MS5611");
+    setComment("  6 = MS5637");
     setValue(RTIMULIB_PRESSURE_TYPE, m_pressureType);
+
+    setBlank();
+    setComment("");
+    setComment("I2C pressure rate register / int value (default is 1) ");
+    setComment("  0 = skip");
+    setComment("  1 = ultra low power");
+    setComment("  2 = lop power");
+    setComment("  3 = standard");
+    setComment("  4 = hig power");
+    setComment("  5 = ultra high power");
+    setValue(RTIMULIB_PRESSURE_RATE, m_pressureRate);
 
     setBlank();
     setComment("");
     setComment("I2C pressure sensor address (filled in automatically by auto discover) ");
     setValue(RTIMULIB_I2C_PRESSUREADDRESS, m_I2CPressureAddress);
+
 
     setBlank();
     setComment("Humidity sensor type - ");
