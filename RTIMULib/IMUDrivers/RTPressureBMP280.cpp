@@ -155,145 +155,18 @@ void RTPressureBMP280::readPressureAndTemperature()
             rslt = get_comp_temp_double(&tmp, m_rawTemperature);
             rslt = get_comp_pres_double(&pres, m_rawPressure);
 
+            m_state = BMP280_STATE_IDLE;
+
             m_pressure = (RTFLOAT) pres;
             m_temperature = (RTFLOAT) tmp;
 
-            /*
-            adc_p = ((data[0] * 65536) + (data[1] * 256) + (data[2] & 0xF0)) / 16
-            adc_t = ((data[3] * 65536) + (data[4] * 256) + (data[5] & 0xF0)) / 16
-
-            int32_t uncomp_press = (int32_t) ((((uint32_t) (temp[0])) << 12) | (((uint32_t) (temp[1])) << 4) | ((uint32_t) temp[2] >> 4));
-            int32_t uncomp_temp = (int32_t) ((((int32_t) (temp[3])) << 12) | (((int32_t) (temp[4])) << 4) | (((int32_t) (temp[5])) >> 4));
-
-            # Temperature offset calculations
-            var1 = ((adc_t) / 16384.0 - (dig_T1) / 1024.0) * (dig_T2)
-            var2 = (((adc_t) / 131072.0 - (dig_T1) / 8192.0) * ((adc_t)/131072.0 - (dig_T1)/8192.0)) * (dig_T3)
-            t_fine = (var1 + var2)
-            cTemp = (var1 + var2) / 5120.0
-            fTemp = cTemp * 1.8 + 32
-
-            # Pressure offset calculations
-            var1 = (t_fine / 2.0) - 64000.0
-            var2 = var1 * var1 * (dig_P6) / 32768.0
-            var2 = var2 + var1 * (dig_P5) * 2.0
-            var2 = (var2 / 4.0) + ((dig_P4) * 65536.0)
-            var1 = ((dig_P3) * var1 * var1 / 524288.0 + ( dig_P2) * var1) / 524288.0
-            var1 = (1.0 + var1 / 32768.0) * (dig_P1)
-            p = 1048576.0 - adc_p
-            p = (p - (var2 / 4096.0)) * 6250.0 / var1
-            var1 = (dig_P9) * p * p / 2147483648.0
-            var2 = p * (dig_P8) / 32768.0
-            pressure = (p + (var1 + var2 + (dig_P7)) / 16.0) / 100
-            */
-
-            /*
-            int32_t pressure = ((((uint32_t)(m_rawPressure)) << 8) + (uint32_t)(data[0])) >> (8 - m_oss);
-
-            m_state = BMP280_STATE_IDLE;
-
-            // calculate compensated temperature
-
-            int32_t X1 = (((int32_t)m_rawTemperature - m_AC6) * m_AC5) / 32768;
-
-            if ((X1 + m_MD) == 0) {
-                break;
-            }
-
-            int32_t X2 = (m_MC * 2048)  / (X1 + m_MD);
-            int32_t B5 = X1 + X2;
-            m_temperature = (RTFLOAT)((B5 + 8) / 16) / (RTFLOAT)10;
-
-            // calculate compensated pressure
-
-            int32_t B6 = B5 - 4000;
-            //          printf("B6 = %d\n", B6);
-            X1 = (m_B2 * ((B6 * B6) / 4096)) / 2048;
-            //          printf("X1 = %d\n", X1);
-            X2 = (m_AC2 * B6) / 2048;
-            //          printf("X2 = %d\n", X2);
-            int32_t X3 = X1 + X2;
-            //          printf("X3 = %d\n", X3);
-            int32_t B3 = (((m_AC1 * 4 + X3) << m_oss) + 2) / 4;
-            //          printf("B3 = %d\n", B3);
-            X1 = (m_AC3 * B6) / 8192;
-            //          printf("X1 = %d\n", X1);
-            X2 = (m_B1 * ((B6 * B6) / 4096)) / 65536;
-            //          printf("X2 = %d\n", X2);
-            X3 = ((X1 + X2) + 2) / 4;
-            //          printf("X3 = %d\n", X3);
-            int32_t B4 = (m_AC4 * (unsigned long)(X3 + 32768)) / 32768;
-            //          printf("B4 = %d\n", B4);
-            uint32_t B7 = ((unsigned long)pressure - B3) * (50000 >> m_oss);
-            //          printf("B7 = %d\n", B7);
-
-            int32_t p;
-            if (B7 < 0x80000000)
-            p = (B7 * 2) / B4;
-                else
-            p = (B7 / B4) * 2;
-
-            //          printf("p = %d\n", p);
-            X1 = (p / 256) * (p / 256);
-            //          printf("X1 = %d\n", X1);
-            X1 = (X1 * 3038) / 65536;
-            //          printf("X1 = %d\n", X1);
-            X2 = (-7357 * p) / 65536;
-            //          printf("X2 = %d\n", X2);
-            m_pressure = (RTFLOAT)(p + (X1 + X2 + 3791) / 16) / (RTFLOAT)100;      // the extra 100 factor is to get 1hPa units
-
             m_validReadings = true;
-            */
 
-            //getPressure();
-            //getTemperature();
 
-            // printf("UP = %d, P = %f, UT = %d, T = %f\n", m_rawPressure, m_pressure, m_rawTemperature, m_temperature);
         break;
     }
 }
-/*
-float RTPressureBMP280::getTemperature(void)
-{
-	int32_t var1 , var2 ;
-	int32_t adc_T = read24(BMP280_REG_TEMPDATA);
-	adc_T>>=4;
-	var1 = (((adc_T>>3)-((int32_t)(t1<<1)))*
-		((int32_t)t2))>>11;
-	var2 = (((((adc_T>>4)-((int32_t)t1))*
-		((adc_T>>4)-((int32_t)t1)))>>12)*
-		((int32_t)t3))>>14;
-	t_fine = var1 + var2 ;
-	float T = (t_fine * 5 +128 )>>8;
-	return T/100;
-}
 
-uint32_t RTPressureBMP280::getPressure(void)
-{
-
-    int32_t uncomp_press = (int32_t) ((((uint32_t) (temp[0])) << 12) | (((uint32_t) (temp[1])) << 4) | ((uint32_t) temp[2] >> 4));
-    int32_t uncomp_temp = (int32_t) ((((int32_t) (temp[3])) << 12) | (((int32_t) (temp[4])) << 4) | (((int32_t) (temp[5])) >> 4));
-
-	int64_t var1,var2,p ;
-	int32_t adc_P = read24(BMP280_REG_PRESSUREDATA);
-	adc_P>>=4;
-	
-	var1 = ((int64_t)t_fine)-128000;
-	var2 = var1 * var1 * (int64_t)p6 ;
-	var2 = var2 + ((var1*(int64_t)p5)<<17);
-	var2 = var2 + (((int64_t)p4)<<35);
-	var1 = ((var1*var1*(int64_t)p3)>>8) + ((var1*(int64_t)p2)<<12);
-	var1 = (((((int64_t)1)<<47)+var1))*((int64_t)p1)>>33;
-	if(var1==0)
-	return 0;
-	
-	p = 1048576 - adc_P;
-	p = (((p<<31)-var2)*3125)/var1;
-	var1 = (((int64_t)p9)*(p>>13)*(p>>13))>>25;
-	var2 = (((int64_t)p8)*p)>>19;
-	p = ((p+var1+var2)>>8)+(((int64_t)p7)<<4);
-	return (uint32_t)p/256;
-}
-*/
 
 int8_t RTPressureBMP280::get_comp_pres_double(double *pressure, uint32_t uncomp_pres)
 {

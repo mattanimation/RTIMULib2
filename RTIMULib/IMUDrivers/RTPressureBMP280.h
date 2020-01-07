@@ -103,8 +103,6 @@ public:
 
 private:
     void readPressureAndTemperature();
-    //uint32_t getPressure();
-    //float getTemperature();
     int8_t get_comp_pres_double(double *pressure, uint32_t uncomp_pres);
     int8_t get_comp_temp_double(double *temperature, int32_t uncomp_temp);
 

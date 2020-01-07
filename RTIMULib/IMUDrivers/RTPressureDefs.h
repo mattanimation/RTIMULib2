@@ -61,7 +61,7 @@
 
 #define BMP280_ADDRESS              0x77
 #define BMP280_REG_ID               0xd0
-#define BMP280_ID                   0x56  //0x56, 57 or 58
+#define BMP280_ID                   0x58  //can be 0x56, 57 or 58
 
 
 //	Register map
